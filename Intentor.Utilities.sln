@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intentor.Utilities 3.5", "src\Intentor.Utilities\Intentor.Utilities 3.5.csproj", "{094DCDEA-DCDC-4172-8D56-5AF30104B3A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intentor.Utilities 4.5", "src\Intentor.Utilities\Intentor.Utilities 4.5.csproj", "{A434EE25-9EB7-47F2-AD5A-E542E74DA822}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{094DCDEA-DCDC-4172-8D56-5AF30104B3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{094DCDEA-DCDC-4172-8D56-5AF30104B3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{094DCDEA-DCDC-4172-8D56-5AF30104B3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{094DCDEA-DCDC-4172-8D56-5AF30104B3A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A434EE25-9EB7-47F2-AD5A-E542E74DA822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A434EE25-9EB7-47F2-AD5A-E542E74DA822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

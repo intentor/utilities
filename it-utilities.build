@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Project DefaultTargets="GenerateRelease" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<!--
+		Build base responsável pela geração de versões de release do componente Intentor.Utilities.
+	-->
+	
+	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+		
+	<!--=CONFIGURAÇÕES===========================================================================-->
+	
+	<!--Configuraões do builder.-->
+	<PropertyGroup>
+		<SourceFolder>src\Intentor.Utilities</SourceFolder>
+		<ReleaseFolder>bin</ReleaseFolder>
+		<Version>12.10.2.1750</Version>
+		<GenerateHelpFile>true</GenerateHelpFile>
+	</PropertyGroup>
+	
+	<!--=============================================================================================-->
+		
+	<!--Arquivos a serem utilizados na geração do release-->
+	<ItemGroup>
+		<DefaultBinFiles Include="$(SourceFolder)\bin\Release\*.dll
+			;$(SourceFolder)\bin\Release\*.pdb
+			;$(SourceFolder)\bin\Release\*.xml" />
+	</ItemGroup>
+	
+	<!--Limpeza das pastas aonde o release será armazenado.-->
+	<Target Name="CleanReleaseFolder">
+		<Message Text="Criação do diretório $(ReleaseFolder)" />
+		<RemoveDir Directories="$(ReleaseFolder)\$(Version)" Condition="Exists('$(ReleaseFolder)\$(Version)')" />
+		<MakeDir Directories="$(ReleaseFolder)\$(Version)\dotNet35" />
+		<MakeDir Directories="$(ReleaseFolder)\$(Version)\dotNet45" />
+	</Target>	
+	
+	<!--Definições de versão manual.-->
+	<Target Name="Version" DependsOnTargets="CleanReleaseFolder">
+		<Message Text="Gerando arquivo de versão." />		
+		<Time Format="yyyy">
+			<Output TaskParameter="FormattedTime" PropertyName="Year" />
+		</Time>
+		<Message Text="Versao: $(Version)" />
+		<AssemblyInfo CodeLanguage="CS" 
+			OutputFile="$(SourceFolder)\Properties\AssemblyInfo.cs"
+			AssemblyTitle="Intentor.Utilities"
+			AssemblyDescription="Intentor Utilities Library."
+			AssemblyCompany="Intentor"
+			AssemblyProduct="Intentor.Utilities"
+			AssemblyCopyright="Copyright © 2009-$(Year) André Intentor Martins"   
+			ComVisible="false"
+			CLSCompliant="true"
+			Guid="1c92bdc2-e125-49d2-ac49-811bc1b4e9f8"
+			AssemblyVersion="$(Version)"
+			AssemblyFileVersion="$(Version)" />
+		<FileUpdate Files="Intentor.Utilities.shfbproj"
+			Regex="Intentor.Utilities \d+.\d+.\d+.\d+"
+			ReplacementText="Intentor.Utilities $(Version)" />
+	</Target>
+	
+	<!--Realização da compilação da aplicação para release (.Net 3.5).-->
+	<Target Name="Compile35" DependsOnTargets="Version">
+		<Message Text="Compilando versão para .Net 3.5." />
+		<MSBuild Projects="$(SourceFolder)\Intentor.Utilities 3.5.csproj"
+			Targets="Clean;Build"
+			Properties="Configuration=Release;OutputPath=bin\Release\" />
+		<Copy SourceFiles="@(DefaultBinFiles)"
+			DestinationFolder="$(ReleaseFolder)\$(Version)\dotNet35" />
+	</Target>
+	
+	<!--Realização da compilação da aplicação para release (.Net 4.5).-->
+	<Target Name="Compile40" DependsOnTargets="Version">
+		<Message Text="Compilando versão para .Net 4.5." />
+		<MSBuild Projects="$(SourceFolder)\Intentor.Utilities 4.5.csproj"
+			Targets="Clean;Build"
+			Properties="Configuration=Release;OutputPath=bin\Release\" />
+		<Copy SourceFiles="@(DefaultBinFiles)"
+			DestinationFolder="$(ReleaseFolder)\$(Version)\dotNet45" />
+	</Target>
+	
+	<!--Criação de arquivo ZIP de versão.-->
+	<Target Name="CreateBinZip">
+		<ItemGroup>
+			<ZipFilesBin Include="$(ReleaseFolder)\$(Version)\**\*.dll
+				;$(ReleaseFolder)\$(Version)\**\*.pdb
+				;$(ReleaseFolder)\$(Version)\**\*.xml
+				;changelog.txt
+				;LGPL-LICENSE.txt
+				;readme.txt" />
+		</ItemGroup>
+		<Message Text="Gerando arquivo ZIP de versão." />
+		<Zip Files="@(ZipFilesBin)"
+			WorkingDirectory="$(ReleaseFolder)\$(Version)"
+			ZipFileName="$(ReleaseFolder)\$(Version)\utilities-$(Version)-bin.zip" />
+	</Target>
+	
+	<!--Criação de arquivo ZIP de documentação.-->
+	<Target Name="CreateDocZip" Condition="$(GenerateHelpFile) == 'true'">
+		<Message Text="Gerando arquivo ZIP de documentação." />
+		<Exec Command="C:\WINDOWS\Microsoft.NET\Framework\v3.5\MSBuild.exe Intentor.Utilities.shfbproj" />
+		<Zip Files="doc\Intentor.Utilities.chm"
+			WorkingDirectory="doc"
+			ZipFileName="$(ReleaseFolder)\$(Version)\utilities-$(Version)-doc.zip" />
+		<Delete Files="doc\LastBuild.log" />
+	</Target>
+
+	<!--Geração  do release.-->
+	<Target Name="GenerateRelease">
+		<CallTarget Targets="CleanReleaseFolder" />
+		<CallTarget Targets="Version" />
+		<CallTarget Targets="Compile35" />
+		<CallTarget Targets="Compile40" />
+		<CallTarget Targets="CreateBinZip" />
+		<CallTarget Targets="CreateDocZip" />
+		<Message Text="Geração de release concluída." />
+	</Target>
+	
+</Project>
