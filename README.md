@@ -4,7 +4,7 @@ C# library with support tools for .Net applications.
 
 *Utilities* was created to serve as a support library for all my .Net projects.
 
-The project is on C# 3.5 and 4.0 and most of the comments are in Brazilian Portuguese.
+The project is in C# 3.5 and 4.0 and most of the comments are in Brazilian Portuguese.
 
 Main features:
 
