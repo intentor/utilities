@@ -19,6 +19,8 @@ Main features:
 - Validation helpers and extensions methods;
 - Web Form controls helpers and extensions methods.
 
+The releases, although not tied to a source code at this repository, contains binaries and documentations for each released version of the project.
+
 Currently the project is **DISCONTINUED**. However, feel free to fork it and continue its development!
 
 ## License
